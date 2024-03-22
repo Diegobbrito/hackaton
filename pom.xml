@@ -15,13 +15,14 @@
 	<description>Hackaton - Sistema de Ponto</description>
 	<properties>
 		<java.version>17</java.version>
+		<project.version>>1.0.0</project.version>
 	</properties>
 	<dependencies>
 		<!-- database -->
 		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<scope>runtime</scope>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.33</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
