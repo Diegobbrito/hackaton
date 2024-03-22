@@ -1,5 +1,6 @@
-package br.com.fiap.pontoeletronico.core.security;
+package br.com.fiap.timelog.configs;
 
+import br.com.fiap.timelog.core.security.UserAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,15 +25,18 @@ public class SecurityConfiguration {
     };
 
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
-            ""
+            "/log-time",
+            "/report"
     };
 
-    public static final String [] ENDPOINTS_CUSTOMER = {
-            "/ponto"
+    public static final String [] ENDPOINTS_USER = {
+            "/log-time",
+            "/report"
     };
 
     public static final String [] ENDPOINTS_ADMIN = {
-            "/ponto"
+            "/log-time",
+            "/report"
     };
 
     public SecurityConfiguration(UserAuthenticationFilter userAuthenticationFilter) {
@@ -47,7 +51,7 @@ public class SecurityConfiguration {
                     auth.requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll();
                     auth.requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated();
                     auth.requestMatchers(ENDPOINTS_ADMIN).hasRole("ADMINISTRATOR");
-                    auth.requestMatchers(ENDPOINTS_CUSTOMER).hasRole("CUSTOMER");
+                    auth.requestMatchers(ENDPOINTS_USER).hasRole("USER");
                     auth.anyRequest().denyAll();
                 })
                 .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

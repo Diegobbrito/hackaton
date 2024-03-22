@@ -1,10 +1,10 @@
-package br.com.fiap.pontoeletronico;
+package br.com.fiap.timelog;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PontoeletronicoApplicationTests {
+class TimeLogsTests {
 
 	@Test
 	void contextLoads() {

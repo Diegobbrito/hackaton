@@ -1,13 +1,13 @@
-package br.com.fiap.pontoeletronico;
+package br.com.fiap.timelog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PontoeletronicoApplication {
+public class TimeLogs {
 
 	public static void main(String[] args) {
-		SpringApplication.run(PontoeletronicoApplication.class, args);
+		SpringApplication.run(TimeLogs.class, args);
 	}
 
 }

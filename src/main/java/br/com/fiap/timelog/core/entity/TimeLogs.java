@@ -1,25 +1,27 @@
-package br.com.fiap.pontoeletronico.core.entity;
+package br.com.fiap.timelog.core.entity;
 
-import br.com.fiap.pontoeletronico.core.enumerator.RoleName;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity
-@Table(name="roles")
-@Builder
+import java.sql.Timestamp;
+
+@Table(name = "Timelogs")
+@Entity(name = "TimeLogs")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Getter
-public class Role {
+public class TimeLogs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private RoleName name;
+    private Long userId;
+
+    Timestamp timeStampRegistry;
 
 }
