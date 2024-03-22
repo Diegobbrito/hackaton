@@ -21,22 +21,14 @@ public class SecurityConfig {
     private final UserAuthenticationFilter userAuthenticationFilter;
 
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "/authenticate"
+            "/authenticate",
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
     };
 
-    public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
-            "/log-time",
-            "/report"
-    };
-
-    public static final String [] ENDPOINTS_USER = {
-            "/log-time",
-            "/report"
-    };
-
-    public static final String [] ENDPOINTS_ADMIN = {
-            "/log-time",
-            "/report"
+    protected static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
+            "/report",
+            "/log-time"
     };
 
     public SecurityConfig(UserAuthenticationFilter userAuthenticationFilter) {
@@ -50,8 +42,6 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll();
                     auth.requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated();
-                    auth.requestMatchers(ENDPOINTS_ADMIN).hasRole("ADMINISTRATOR");
-                    auth.requestMatchers(ENDPOINTS_USER).hasRole("USER");
                     auth.anyRequest().denyAll();
                 })
                 .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
