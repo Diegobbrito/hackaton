@@ -3,12 +3,16 @@ package br.com.fiap.timelog.api.controller;
 import br.com.fiap.timelog.api.dto.request.UserLoginRequest;
 import br.com.fiap.timelog.api.dto.response.TokenJWTResponse;
 import br.com.fiap.timelog.core.usecase.authenticate.IAuthenticate;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -25,8 +29,12 @@ class AuthenticateControllerTest {
 
     @Test
     void authenticate(){
-        UserLoginRequest request = new UserLoginRequest("","");
+        UserLoginRequest request = new UserLoginRequest("test@mail.com","test");
         when(authenticateUseCase.authenticate(any(UserLoginRequest.class))).thenReturn(new TokenJWTResponse("token"));
         final var response = controller.authenticate(request);
+
+        assertEquals(
+                "token", Objects.requireNonNull(response.getBody()).token()
+        );
     }
 }
