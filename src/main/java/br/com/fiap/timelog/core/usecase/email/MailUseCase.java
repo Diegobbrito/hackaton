@@ -7,6 +7,8 @@ import br.com.fiap.timelog.infra.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.List;
@@ -31,24 +33,32 @@ public class MailUseCase implements IMail {
         if(user.isEmpty())
             throw new UserException("Usuário não encontrado");
 
-        var title = "Olá " + user.get().getUsername()+", seu relatório de ponto foi gerado.";
+        var title = "Olá " + user.get().getUsername() + ", seu relatório de ponto foi gerado.";
+
+        BigDecimal totalMonthHours = BigDecimal.ZERO;
         StringBuilder reportToSent = new StringBuilder();
         reportToSent.append("<h1>Relatório de Ponto</h1").append("<br/>")
                 .append("<p>Aqui está seu relatório de ponto do mês de ")
                 .append(StringUtils.capitalize(localDate.getMonth().getDisplayName(TextStyle.FULL,  new Locale("pt", "BR"))))
                 .append(" de ").append(localDate.getYear()).append("</p>")
                 .append("<table border='1'>");
-        report.forEach(timeLog -> {
-            timeLog.dateTime().forEach(log ->{
-                            reportToSent.append("<tr><td>")
-                                    .append(log)
-                                    .append("</tr></td>");
-                    }
+
+
+        for (TimeLogsResponse timeLog : report) {
+            totalMonthHours = totalMonthHours.add(new BigDecimal(timeLog.totalHours()));
+            timeLog.dateTime().forEach(log ->
+                        reportToSent.append("<tr><td>")
+                                .append(log)
+                                .append("</tr></td>")
             );
             reportToSent.append("<tr><td>Total de horas no dia: ")
                     .append(timeLog.totalHours())
-                    .append( "</tr></td>");
-        } );
+                    .append("</tr></td>");
+        }
+
+        reportToSent.append("<tr><td>Total de horas no Mês: ")
+                .append(totalMonthHours.setScale(2, RoundingMode.HALF_UP))
+                .append("</tr></td>");
 
         mailDataProvider.sendEmail(email, title, reportToSent.toString());
     }
