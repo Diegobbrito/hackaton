@@ -40,11 +40,47 @@ public class MailUseCase implements IMail {
 
         BigDecimal totalMonthHours = BigDecimal.ZERO;
         StringBuilder reportToSent = new StringBuilder();
-        reportToSent.append("<h1>Relatório de Ponto</h1").append("<br/>")
+        reportToSent.append("""
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <title>Relatório de Ponto</title>
+                            <style>
+                                body {
+                                    font-family: Arial, sans-serif;
+                                    margin: 0;
+                                    padding: 0;
+                                }
+                                h1 {
+                                    text-align: center;
+                                    margin-top: 20px;
+                                }
+                                table {
+                                    width: 100%;
+                                    border-collapse: collapse;
+                                }
+                                th, td {
+                                    border: 1px solid black;
+                                    padding: 8px;
+                                    text-align: left;
+                                }
+                                th {
+                                    background-color: #f2f2f2;
+                                }
+                                tr:nth-child(even) {
+                                    background-color: #f2f2f2;
+                                }
+                                p {
+                                    margin-left: 20px;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                        """).append("<h1>Relatório de Ponto</h1").append("<br/>")
                 .append("<p>Aqui está seu relatório de ponto do mês de ")
                 .append(StringUtils.capitalize(localDate.getMonth().getDisplayName(TextStyle.FULL,  new Locale("pt", "BR"))))
                 .append(" de ").append(localDate.getYear()).append("</p>")
-                .append("<table border='1'>");
+                .append("<table>");
 
 
         for (TimeLogsResponse timeLog : report) {
@@ -61,7 +97,12 @@ public class MailUseCase implements IMail {
 
         reportToSent.append(TABLE_LINE + "Total de horas no Mês: ")
                 .append(totalMonthHours.setScale(2, RoundingMode.HALF_UP))
-                .append(TABLE_LINE_CLOSE);
+                .append(TABLE_LINE_CLOSE)
+                .append("""
+                        </table>
+                        </body>
+                        </html>
+                        """);
 
         mailDataProvider.sendEmail(email, title, reportToSent.toString());
     }
