@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timelogdb
+  labels:
+    app: timelogdb
+    tier: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timelogdb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: timelogdb
+        tier: database
+    spec:
+      containers:
+        - name:  timelogdb
+          image: diegobbrito17/timelogs-db:latest
+          ports:
+            - containerPort: 3306
+              name: timelogdb
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: db_root_password
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: db_database
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: db_user
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: db_password
+          volumeMounts:
+            - name: db-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: db-persistent-storage
+          persistentVolumeClaim:
+            claimName: db-pvc

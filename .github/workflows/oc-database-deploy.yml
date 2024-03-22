@@ -1,0 +1,27 @@
+name: Destroy Database kubernetes files
+on:
+  workflow_dispatch:
+#  schedule:
+#    - cron: 0 0 * * *
+
+jobs:
+  CD:
+    runs-on: ubuntu-latest
+    needs: push-docker-image
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Login to OpenShift
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          oc login --token=${{ secrets.OCP_TOKEN }} --server=${{ secrets.OCP_SERVER }}
+
+      - name: Deploy to OpenShift
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}
+        run: |
+          oc delete -f ./kubernetes/db/pvc.yaml
+          oc delete -f ./kubernetes/db/secret.yaml
+          oc delete -f ./kubernetes/db/service.yaml
+          oc delete -f ./kubernetes/db/deployment.yaml

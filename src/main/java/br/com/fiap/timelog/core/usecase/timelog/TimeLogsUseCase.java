@@ -5,7 +5,7 @@ import br.com.fiap.timelog.api.dto.request.TimeLogsRequest;
 import br.com.fiap.timelog.api.dto.response.TimeLogsResponse;
 import br.com.fiap.timelog.api.exception.TimeLogException;
 import br.com.fiap.timelog.core.entity.TimeLogs;
-import br.com.fiap.timelog.core.usecase.email.IEnviarEmailCliente;
+import br.com.fiap.timelog.core.usecase.email.IMail;
 import br.com.fiap.timelog.infra.repository.TimeLogsRepository;
 import br.com.fiap.timelog.infra.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -27,19 +27,19 @@ public class TimeLogsUseCase implements ITimeLogs {
     private final TimeLogsRepository repository;
     private final UserRepository userRepository;
 
-    private final IEnviarEmailCliente enviarEmailCliente;
+    private final IMail sendMail;
 
-    public TimeLogsUseCase(TimeLogsRepository repository, UserRepository userRepository, IEnviarEmailCliente enviarEmailCliente) {
+    public TimeLogsUseCase(TimeLogsRepository repository, UserRepository userRepository, IMail sendMail) {
         this.repository = repository;
         this.userRepository = userRepository;
-        this.enviarEmailCliente = enviarEmailCliente;
+        this.sendMail = sendMail;
     }
 
     @Override
     public void createRegistry(TimeLogsRequest request) {
         var timestamp = Timestamp.from(Instant.now());
-        var usuario = userRepository.findById(request.userId());
-        if (usuario.isEmpty()){
+        var user = userRepository.findById(request.userId());
+        if (user.isEmpty()){
             throw new RuntimeException("Usuario não encontrado");
         }
 
@@ -70,7 +70,7 @@ public class TimeLogsUseCase implements ITimeLogs {
         var timeLogs = repository.findAllByUserIdAndLastMonth(userId, date);
 
         final var report = sortByDate(timeLogs);
-        enviarEmailCliente.enviarEmail(userEmail, report, date);
+        sendMail.sendMail(userEmail, report, date);
         return new ReportResponse("O report será enviado para o email: ");
     }
 
