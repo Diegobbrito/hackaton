@@ -99,4 +99,6 @@ jobs:
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
+          oc apply -f ./kubernetes/app/service.yaml
+          oc apply -f ./kubernetes/app/route.yaml
           oc apply -f ./kubernetes/app/deployment.yaml
