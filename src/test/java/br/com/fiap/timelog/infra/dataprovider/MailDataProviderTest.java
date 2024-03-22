@@ -13,6 +13,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -37,7 +38,9 @@ class MailDataProviderTest {
 
         doNothing().when(emailSender).send(any(MimeMessage.class));
 
-        mailDataProvider.sendEmail("test@mail.com", "Text", "Text");
+        assertDoesNotThrow(() ->
+                mailDataProvider.sendEmail("test@mail.com", "Text", "Text")
+        );
     }
 
     @Test

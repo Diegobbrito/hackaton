@@ -26,6 +26,9 @@ public class MailUseCase implements IMail {
         this.mailDataProvider = mailDataProvider;
     }
 
+    private static final  String TABLE_LINE = "<tr><td>";
+    private static final String TABLE_LINE_CLOSE = "<tr><td>";
+
 
     @Override
     public void sendMail(String email, List<TimeLogsResponse> report, LocalDate localDate) {
@@ -47,18 +50,18 @@ public class MailUseCase implements IMail {
         for (TimeLogsResponse timeLog : report) {
             totalMonthHours = totalMonthHours.add(new BigDecimal(timeLog.totalHours()));
             timeLog.dateTime().forEach(log ->
-                        reportToSent.append("<tr><td>")
+                        reportToSent.append(TABLE_LINE)
                                 .append(log)
-                                .append("</tr></td>")
+                                .append(TABLE_LINE_CLOSE)
             );
-            reportToSent.append("<tr><td>Total de horas no dia: ")
+            reportToSent.append(TABLE_LINE + "Total de horas no dia: ")
                     .append(timeLog.totalHours())
-                    .append("</tr></td>");
+                    .append(TABLE_LINE_CLOSE);
         }
 
-        reportToSent.append("<tr><td>Total de horas no Mês: ")
+        reportToSent.append(TABLE_LINE + "Total de horas no Mês: ")
                 .append(totalMonthHours.setScale(2, RoundingMode.HALF_UP))
-                .append("</tr></td>");
+                .append(TABLE_LINE_CLOSE);
 
         mailDataProvider.sendEmail(email, title, reportToSent.toString());
     }
