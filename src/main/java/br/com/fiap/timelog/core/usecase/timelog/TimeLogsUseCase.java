@@ -71,7 +71,7 @@ public class TimeLogsUseCase implements ITimeLogs {
 
         final var report = sortByDate(timeLogs);
         sendMail.sendMail(userEmail, report, date);
-        return new ReportResponse("O report será enviado para o email: ");
+        return new ReportResponse("O report será enviado para o email: " + userEmail);
     }
 
     private List<TimeLogsResponse> sortByDate(List<TimeLogs> timeLogs) {
@@ -110,7 +110,7 @@ public class TimeLogsUseCase implements ITimeLogs {
                 var checkOut = logs.get(i +1).getTimeStampRegistry();
                 long diffInMillis = checkOut.getTime() - checkIn.getTime();
 
-                totalHours = totalHours.add(new BigDecimal( diffInMillis / 3600000.0));
+                totalHours = totalHours.add(BigDecimal.valueOf( diffInMillis / 3600000.0));
             }
 
         return totalHours.setScale(2, RoundingMode.FLOOR).toString();
