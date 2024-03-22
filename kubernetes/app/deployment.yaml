@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: timelog
+  labels:
+    app: timelog
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: timelog
+  template:
+    metadata:
+      labels:
+        app: timelog
+    spec:
+      containers:
+        - name: timelog
+          image: diegobbrito17/timelogs:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: db_database
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: db_user
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: db_password
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: db_port
+            - name: DB_SERVER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: db_server
+            - name: DB_PASSWORD_ROOT
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: db_root_password
+            - name: BACK_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: back_port
+            - name: MAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: mail_user
+            - name: MAIL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: mail_password
+            - name: MAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: mail_host
+            - name: MAIL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: mail_port
+            - name: SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: secret
+                  key: secret
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    autoscaler:
+      minReplicas: 1
+      maxReplicas: 20
+      metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          targetAverageUtilization: 50
+    schedule:
+      - name: scale-up
+        schedule: "0 9 * *"
+        replicas: 10
+      - name: scale-down
+        schedule: "0 12 * *"
+        replicas: 1
+      - name: scale-up
+        schedule: "0 14 * *"
+        replicas: 10
+      - name: scale-down
+        schedule: "0 18 * *"
+        replicas: 1
