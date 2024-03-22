@@ -1,0 +1,69 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: timelog-scheduled-scale-up-9
+spec:
+  schedule: "0 9 * * *"  # Agendar para 9h da manhã todos os dias
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: scale-up
+              image: openshift/oc:latest
+              command: ["oc", "scale", "--replicas=10", "deployment/timelog"]
+          restartPolicy: OnFailure
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: timelog-scheduled-scale-down-12
+spec:
+  schedule: "0 12 * * *"  # Agendar para 12h do meio-dia todos os dias
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: scale-down
+              image: openshift/oc:latest
+              command: ["oc", "scale", "--replicas=1", "deployment/timelog"]
+          restartPolicy: OnFailure
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: timelog-scheduled-scale-up-14
+spec:
+  schedule: "0 14 * * *"  # Agendar para 14h da tarde todos os dias
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: scale-up
+              image: openshift/oc:latest
+              command: ["oc", "scale", "--replicas=10", "deployment/timelog"]
+          restartPolicy: OnFailure
+
+---
+
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: timelog-scheduled-scale-down-18
+spec:
+  schedule: "0 18 * * *"  # Agendar para 18h da tarde todos os dias
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: scale-down
+              image: openshift/oc:latest
+              command: ["oc", "scale", "--replicas=1", "deployment/timelog"]
+          restartPolicy: OnFailure

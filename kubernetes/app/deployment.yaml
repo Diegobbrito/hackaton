@@ -87,24 +87,3 @@ spec:
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
-    autoscaler:
-      minReplicas: 1
-      maxReplicas: 20
-      metrics:
-      - type: Resource
-        resource:
-          name: cpu
-          targetAverageUtilization: 50
-    schedule:
-      - name: scale-up
-        schedule: "0 9 * *"
-        replicas: 10
-      - name: scale-down
-        schedule: "0 12 * *"
-        replicas: 1
-      - name: scale-up
-        schedule: "0 14 * *"
-        replicas: 10
-      - name: scale-down
-        schedule: "0 18 * *"
-        replicas: 1
