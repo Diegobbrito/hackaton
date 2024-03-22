@@ -1,6 +1,6 @@
 package br.com.fiap.timelog.core.security;
 
-import br.com.fiap.timelog.configs.SecurityConfiguration;
+import br.com.fiap.timelog.configs.SecurityConfig;
 import br.com.fiap.timelog.infra.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -59,7 +59,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {
         String requestURI = request.getRequestURI();
-        return !Arrays.asList(SecurityConfiguration.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).contains(requestURI);
+        return !Arrays.asList(SecurityConfig.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).contains(requestURI);
     }
 
 }
