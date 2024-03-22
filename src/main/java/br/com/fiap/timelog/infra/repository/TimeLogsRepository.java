@@ -13,11 +13,11 @@ import java.util.Optional;
 @Repository
 public interface TimeLogsRepository extends JpaRepository<TimeLogs, Long> {
 
-    @Query("SELECT t FROM TimeLogs t WHERE t.userId = :userId ORDER BY t.timeStampRegistry DESC LIMIT 1")
+    @Query("SELECT t FROM timelogs t WHERE t.userId = :userId ORDER BY t.timeStampRegistry DESC LIMIT 1")
     Optional<TimeLogs> findLastLogByUserId(@Param("userId") Long userId);
 
     @Query("""
-            SELECT t FROM TimeLogs t
+            SELECT t FROM timelogs t
             WHERE t.userId = :userId
             AND DAY(t.timeStampRegistry) = DAY(:date)
             AND MONTH(t.timeStampRegistry) = MONTH(:date)
@@ -25,7 +25,7 @@ public interface TimeLogsRepository extends JpaRepository<TimeLogs, Long> {
             """)
     List<TimeLogs> findAllByUserIdAndDate(@Param("userId") Long userId, @Param("date") LocalDate date);
     @Query("""
-            SELECT t FROM TimeLogs t
+            SELECT t FROM timelogs t
             WHERE t.userId = :userId
             AND MONTH(t.timeStampRegistry) = MONTH(:date)
             AND YEAR(t.timeStampRegistry) = YEAR(:date)
