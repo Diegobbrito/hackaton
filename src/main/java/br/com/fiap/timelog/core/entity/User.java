@@ -1,4 +1,4 @@
-package br.com.fiap.pontoeletronico.core.entity;
+package br.com.fiap.timelog.core.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,27 +8,21 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Table(name = "users")
+@Table(name = "Users")
 @Entity(name = "User")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
-public class Usuario {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private String username;
     @Column(unique = true)
     private String email;
-
     private String password;
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinTable(name="users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name="role_id"))
-    private List<Role> roles;
+    private String roles;
 
 }

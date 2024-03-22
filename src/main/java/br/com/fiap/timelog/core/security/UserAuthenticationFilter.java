@@ -1,6 +1,7 @@
-package br.com.fiap.pontoeletronico.core.security;
+package br.com.fiap.timelog.core.security;
 
-import br.com.fiap.pontoeletronico.infra.repository.UsuarioRepository;
+import br.com.fiap.timelog.configs.SecurityConfiguration;
+import br.com.fiap.timelog.infra.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,9 +19,9 @@ import java.util.Arrays;
 public class UserAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenService jwtTokenService;
-    private final UsuarioRepository userRepository;
+    private final UserRepository userRepository;
 
-    public UserAuthenticationFilter(JwtTokenService jwtTokenService, UsuarioRepository userRepository) {
+    public UserAuthenticationFilter(JwtTokenService jwtTokenService, UserRepository userRepository) {
         this.jwtTokenService = jwtTokenService;
         this.userRepository = userRepository;
     }
@@ -36,7 +37,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
                 if (usuario.isEmpty()){
                     throw new RuntimeException("Usuario não encontrado");
                 }
-                UsuarioDetails userDetails = new UsuarioDetails(usuario.get());
+                UserDetailsImpl userDetails = new UserDetailsImpl(usuario.get());
                 Authentication authentication =
                         new UsernamePasswordAuthenticationToken(userDetails.getUsername(), null, userDetails.getAuthorities());
 
