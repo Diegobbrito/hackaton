@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: timelog
-          image: diegobbrito17/timelog:1.0.4
+          image: diegobbrito17/timelog:1.0.5
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
