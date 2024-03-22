@@ -80,9 +80,12 @@ Entendemos que para a criação da segunda fase, uma arquitetura com microsservi
 #### Rota segura
 ![deploy](https://github.com/Diegobbrito/hackaton/blob/main/docs/rota.jpg)
 #### Hpa - AutoScale
+- Utilizado minimo de 2 e maximo de 10
+- Ideal avaliar por meio de Stress Test a quantidade real minima e máxima necessária
 ![deploy](https://github.com/Diegobbrito/hackaton/blob/main/docs/hpa.jpg)
 #### CronJobs 
-- Utilizado para scale no ínicio dos horários de pico da aplicação.
+- Utilizado para scale no ínicio e final dos horários de pico da aplicação.
+- Ideal avaliar por meio de Stress Test a quantidade minima necessária nos horários de pico e pós
 ![deploy](https://github.com/Diegobbrito/hackaton/blob/main/docs/cronjobs.jpg)
 
 ## Autores
