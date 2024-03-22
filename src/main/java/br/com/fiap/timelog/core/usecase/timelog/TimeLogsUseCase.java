@@ -4,6 +4,7 @@ import br.com.fiap.timelog.api.dto.response.ReportResponse;
 import br.com.fiap.timelog.api.dto.request.TimeLogsRequest;
 import br.com.fiap.timelog.api.dto.response.TimeLogsResponse;
 import br.com.fiap.timelog.api.exception.TimeLogException;
+import br.com.fiap.timelog.api.exception.UserException;
 import br.com.fiap.timelog.core.entity.TimeLogs;
 import br.com.fiap.timelog.core.usecase.email.IMail;
 import br.com.fiap.timelog.infra.repository.TimeLogsRepository;
@@ -40,7 +41,7 @@ public class TimeLogsUseCase implements ITimeLogs {
         var timestamp = Timestamp.from(Instant.now());
         var user = userRepository.findById(request.userId());
         if (user.isEmpty()){
-            throw new RuntimeException("Usuario não encontrado");
+            throw new UserException("Usuario não encontrado");
         }
 
         repository
@@ -88,7 +89,9 @@ public class TimeLogsUseCase implements ITimeLogs {
 
         List<String> response =  new ArrayList<>(1);
 
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("EEEE - 'Dia: 'dd/MM/yy' - Horário: 'HH:mm:ss");
+        DateTimeFormatter format = DateTimeFormatter
+                .ofPattern("EEEE - 'Dia: 'dd/MM/yy' - Horário: 'HH:mm:ss",
+                        new Locale("pt", "BR"));
 
         timelogs.forEach(timeLog ->
             response.add(StringUtils.capitalize(format.format(timeLog.getTimeStampRegistry().toLocalDateTime())))
