@@ -16,7 +16,7 @@ jobs:
         run: |
           oc login --token=${{ secrets.OCP_TOKEN }} --server=${{ secrets.OCP_SERVER }}
 
-      - name: Deploy to OpenShift
+      - name: Destroy to OpenShift
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |
