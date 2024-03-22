@@ -29,7 +29,7 @@ spec:
           containers:
             - name: scale-down
               image: openshift/oc:latest
-              command: ["oc", "scale", "--replicas=1", "deployment/timelog"]
+              command: ["oc", "scale", "--replicas=2", "deployment/timelog"]
           restartPolicy: OnFailure
 
 ---
@@ -65,5 +65,5 @@ spec:
           containers:
             - name: scale-down
               image: openshift/oc:latest
-              command: ["oc", "scale", "--replicas=1", "deployment/timelog"]
+              command: ["oc", "scale", "--replicas=2", "deployment/timelog"]
           restartPolicy: OnFailure
