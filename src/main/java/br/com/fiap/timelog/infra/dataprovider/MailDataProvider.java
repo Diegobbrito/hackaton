@@ -16,17 +16,16 @@ public class MailDataProvider {
 
 
     public void sendEmail(String to, String title, String messageText) {
-        MimeMessage message = emailSender.createMimeMessage();
 
         try {
+            MimeMessage message = emailSender.createMimeMessage();
             message.setFrom(new InternetAddress("pos-tech@fiap.com.br"));
             message.setRecipients(MimeMessage.RecipientType.TO, to);
             message.setSubject(title);
             message.setContent(messageText, "text/html; charset=utf-8");
-
+            emailSender.send(message);
         }catch (Exception e){
             throw new MailException("Erro ao enviar o email");
         }
-        emailSender.send(message);
     }
 }
