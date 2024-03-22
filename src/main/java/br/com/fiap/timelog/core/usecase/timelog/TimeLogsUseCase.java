@@ -4,6 +4,7 @@ import br.com.fiap.timelog.api.dto.response.ReportResponse;
 import br.com.fiap.timelog.api.dto.request.TimeLogsRequest;
 import br.com.fiap.timelog.api.dto.response.TimeLogsResponse;
 import br.com.fiap.timelog.api.exception.TimeLogException;
+import br.com.fiap.timelog.api.exception.UserException;
 import br.com.fiap.timelog.core.entity.TimeLogs;
 import br.com.fiap.timelog.core.usecase.email.IMail;
 import br.com.fiap.timelog.infra.repository.TimeLogsRepository;
@@ -16,6 +17,7 @@ import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -37,10 +39,10 @@ public class TimeLogsUseCase implements ITimeLogs {
 
     @Override
     public void createRegistry(TimeLogsRequest request) {
-        var timestamp = Timestamp.from(Instant.now());
+        var timestamp = Timestamp.from(Instant.now().atZone(ZoneId.of("America/Sao_Paulo")).toInstant());
         var user = userRepository.findById(request.userId());
         if (user.isEmpty()){
-            throw new RuntimeException("Usuario não encontrado");
+            throw new UserException("Usuario não encontrado");
         }
 
         repository
@@ -88,7 +90,9 @@ public class TimeLogsUseCase implements ITimeLogs {
 
         List<String> response =  new ArrayList<>(1);
 
-        DateTimeFormatter format = DateTimeFormatter.ofPattern("EEEE - 'Dia: 'dd/MM/yy' - Horário: 'HH:mm:ss");
+        DateTimeFormatter format = DateTimeFormatter
+                .ofPattern("EEEE - 'Dia: 'dd/MM/yy' - Horário: 'HH:mm:ss",
+                        new Locale("pt", "BR"));
 
         timelogs.forEach(timeLog ->
             response.add(StringUtils.capitalize(format.format(timeLog.getTimeStampRegistry().toLocalDateTime())))
@@ -119,6 +123,6 @@ public class TimeLogsUseCase implements ITimeLogs {
     private void hasAMinuteDifference(Timestamp now, Timestamp lastLog) {
         long differenceInMinutes = TimeUnit.MILLISECONDS.toMinutes(now.getTime() - lastLog.getTime());
         if(differenceInMinutes < 1)
-            throw new TimeLogException("Ultimo registro em menos de 1 minutos");
+            throw new TimeLogException("Último registro em menos de 1 minuto");
     }
 }

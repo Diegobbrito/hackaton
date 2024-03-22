@@ -102,3 +102,5 @@ jobs:
           oc apply -f ./kubernetes/app/service.yaml
           oc apply -f ./kubernetes/app/route.yaml
           oc apply -f ./kubernetes/app/deployment.yaml
+          oc apply -f ./kubernetes/app/hpa.yaml
+          oc apply -f ./kubernetes/app/cronjob.yaml

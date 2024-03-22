@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
-@Table(name = "Timelogs")
-@Entity(name = "TimeLogs")
+@Table(name = "timelogs")
+@Entity(name = "timelogs")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

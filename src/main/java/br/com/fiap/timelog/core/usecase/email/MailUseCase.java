@@ -61,8 +61,9 @@ public class MailUseCase implements IMail {
                                 }
                                 th, td {
                                     border: 1px solid black;
-                                    padding: 8px;
+                                    padding: 2px;
                                     text-align: left;
+                                    font-size: 16px;
                                 }
                                 th {
                                     background-color: #f2f2f2;

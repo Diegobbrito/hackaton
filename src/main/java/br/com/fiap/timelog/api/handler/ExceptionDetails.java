@@ -1,4 +1,4 @@
-package br.com.fiap.timelog.api;
+package br.com.fiap.timelog.api.handler;
 
 import lombok.Getter;
 
