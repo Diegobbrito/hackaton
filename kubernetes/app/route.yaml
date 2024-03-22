@@ -1,0 +1,18 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: timelog
+  namespace: diegobrito-dev
+  labels:
+    app_name: timelog
+spec:
+  to:
+    kind: Service
+    name: svc-timelog
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Allow
+    destinationCACertificate: ''
+  path: /
+  port:
+    targetPort: 8080

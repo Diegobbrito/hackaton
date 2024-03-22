@@ -7,7 +7,6 @@ on:
 jobs:
   CD:
     runs-on: ubuntu-latest
-    needs: push-docker-image
     steps:
       - uses: actions/checkout@v3
 
@@ -17,7 +16,7 @@ jobs:
         run: |
           oc login --token=${{ secrets.OCP_TOKEN }} --server=${{ secrets.OCP_SERVER }}
 
-      - name: Deploy to OpenShift
+      - name: Destroy to OpenShift
         env:
           KUBECONFIG: ${{ secrets.KUBECONFIG }}
         run: |

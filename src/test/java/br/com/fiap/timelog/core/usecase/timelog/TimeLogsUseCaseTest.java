@@ -6,6 +6,7 @@ import br.com.fiap.timelog.core.entity.User;
 import br.com.fiap.timelog.core.usecase.email.IMail;
 import br.com.fiap.timelog.infra.repository.TimeLogsRepository;
 import br.com.fiap.timelog.infra.repository.UserRepository;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -19,6 +20,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
@@ -47,27 +50,35 @@ class TimeLogsUseCaseTest {
         when(repository
                 .findLastLogByUserId(anyLong())).thenReturn(Optional.of(timeLogs));
 
-        useCase.createRegistry(new TimeLogsRequest(1L));
+        assertDoesNotThrow(() ->
+            useCase.createRegistry(new TimeLogsRequest(1L))
+        );
 
     }
 
     @Test
     void getRegistriesByDate() {
-        TimeLogs timeLogs = TimeLogs.builder().id(1L).userId(1L).timeStampRegistry(Timestamp.from(Instant.now())).build();
-        when(repository.findAllByUserIdAndDate(anyLong(), any())).thenReturn(List.of(timeLogs));
+        TimeLogs timeLogs = TimeLogs.builder().id(1L).userId(1L).timeStampRegistry(Timestamp.from(Instant.now().minusSeconds(28800))).build();
+        TimeLogs timeLogsExit = TimeLogs.builder().id(1L).userId(1L).timeStampRegistry(Timestamp.from(Instant.now())).build();
+        when(repository.findAllByUserIdAndDate(anyLong(), any())).thenReturn(List.of(timeLogs, timeLogsExit));
         var response = useCase.getRegistriesByDate(1L, "01-03-2024");
+
+        assertEquals("8.00", response.get(0).totalHours());
+        assertEquals(2, response.get(0).dateTime().size());
     }
 
     @Test
     void generateReport() {
         TimeLogs timeLogs = TimeLogs.builder().id(1L).userId(1L).timeStampRegistry(Timestamp.from(Instant.now())).build();
 
-         when(repository.findAllByUserIdAndLastMonth(anyLong(), any())).thenReturn(List.of(timeLogs));
+        when(repository.findAllByUserIdAndLastMonth(anyLong(), any())).thenReturn(List.of(timeLogs));
 
 
         doNothing().when(sendMail).sendMail(anyString(), anyList(), any());
 
-        var response = useCase.generateReport(1L, "01-03-2024");
+        var response = useCase.generateReport(1L, "mail@test.com");
+
+        assertEquals("O report será enviado para o email: mail@test.com", response.result());
 
     }
 
