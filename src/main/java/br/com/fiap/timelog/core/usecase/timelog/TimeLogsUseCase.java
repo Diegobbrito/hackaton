@@ -17,6 +17,7 @@ import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +39,7 @@ public class TimeLogsUseCase implements ITimeLogs {
 
     @Override
     public void createRegistry(TimeLogsRequest request) {
-        var timestamp = Timestamp.from(Instant.now());
+        var timestamp = Timestamp.from(Instant.now().atZone(ZoneId.of("America/Sao_Paulo")).toInstant());
         var user = userRepository.findById(request.userId());
         if (user.isEmpty()){
             throw new UserException("Usuario não encontrado");
@@ -122,6 +123,6 @@ public class TimeLogsUseCase implements ITimeLogs {
     private void hasAMinuteDifference(Timestamp now, Timestamp lastLog) {
         long differenceInMinutes = TimeUnit.MILLISECONDS.toMinutes(now.getTime() - lastLog.getTime());
         if(differenceInMinutes < 1)
-            throw new TimeLogException("Ultimo registro em menos de 1 minutos");
+            throw new TimeLogException("Último registro em menos de 1 minuto");
     }
 }
