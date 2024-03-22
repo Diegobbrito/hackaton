@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name:  timelogdb
-          image: diegobbrito17/timelogs-db:latest
+          image: diegobbrito17/timelogsdb:latest
           ports:
             - containerPort: 3306
               name: timelogdb
