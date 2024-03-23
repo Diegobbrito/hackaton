@@ -76,7 +76,7 @@ Entendemos que para a criação da segunda fase, uma arquitetura com microsservi
 - Controle e manutenção de código de serviços menores
 - Utilização de filas para comunicação assincrona na geração de relatórios
 
-### Calculo do uso de dados
+### Estimativa de uso de dados
 
 ![DB](https://github.com/Diegobbrito/hackaton/blob/main/docs/storage.jpg)
 
