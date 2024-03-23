@@ -13,8 +13,8 @@ Aplicação para criação e gerenciamento de ponto eletrônico.
 
 ## O que contempla a aplicação
 - Autenticação de usuario por email e senha pré cadastrados no banco de dados, retornando um token que deve ser usado nos demais serviços
-- Marcação de ponto
-- Listagem de marcações por dia:
+- Marcação de ponto, com validação de pelo menos um minuto entre duas marcações
+- Listagem das marcações em um dia, com cálculo de horas trabalhadas:
   - ?date=dd-MM-yyyy
   - ?date=22-03-2024
 - Geração de relatório de ponto eletrônico do mês anterior e envio por email
