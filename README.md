@@ -11,6 +11,14 @@ Aplicação para criação e gerenciamento de ponto eletrônico.
 - Foram realizados testes de segurança na aplicação
 - O relatorio se encontra na pasta [docs](https://github.com/Diegobbrito/hackaton/tree/main/docs)
 
+## O que contempla a aplicação
+- Autenticação de usuario por email e senha pré cadastrados no banco de dados, retornando um token que deve ser usado nos demais serviços
+- Marcação de ponto
+- Listagem de marcações por dia:
+  - ?date=dd-MM-yyyy
+  - ?date=22-03-2024
+- Geração de relatório de ponto eletrônico do mês anterior e envio por email
+  ![deploy](https://github.com/Diegobbrito/hackaton/blob/main/docs/reportmail.png)
 ## Como testar a aplicação com docker compose
 
 Faça download do projeto, crie/atualize o arquivo de variaveis e na pasta principal rode o comando no terminal:
@@ -20,8 +28,6 @@ Faça download do projeto, crie/atualize o arquivo de variaveis e na pasta princ
 ```
 No navegador, abra a pagina do Swagger da aplicação:
 http://localhost:8080/swagger-ui/index.html#/
-
-O Swagger está documentado com exemplos de request.
 
 ## Como testar a aplicação com kubernetes
 
@@ -78,15 +84,17 @@ Entendemos que para a criação da segunda fase, uma arquitetura com microsservi
 #### Deployment
 ![deploy](https://github.com/Diegobbrito/hackaton/blob/main/docs/deploy.jpg)
 #### Rota segura
-![deploy](https://github.com/Diegobbrito/hackaton/blob/main/docs/rota.jpg)
+![route](https://github.com/Diegobbrito/hackaton/blob/main/docs/rota.jpg)
 #### Hpa - AutoScale
-- Utilizado minimo de 2 e maximo de 10
-- Ideal avaliar por meio de Stress Test a quantidade real minima e máxima necessária
-![deploy](https://github.com/Diegobbrito/hackaton/blob/main/docs/hpa.jpg)
+- Utilizado mínimo de 2 e máximo de 20.
+- Ideal avaliar por meio de Stress Test a quantidade real minima e máxima necessária.
+- Utilizamos o autoscale para reduzir custos quando houver um baixo volume de uso da aplicação
+![hpa](https://github.com/Diegobbrito/hackaton/blob/main/docs/hpa.jpg)
 #### CronJobs 
 - Utilizado para scale no ínicio e final dos horários de pico da aplicação.
 - Ideal avaliar por meio de Stress Test a quantidade minima necessária nos horários de pico e pós
-![deploy](https://github.com/Diegobbrito/hackaton/blob/main/docs/cronjobs.jpg)
+- Utilizamos o scale pré definido nos horarios de pico, para atender a necessidade dos usuários
+![cron](https://github.com/Diegobbrito/hackaton/blob/main/docs/cronjobs.jpg)
 
 ## Autores
 
