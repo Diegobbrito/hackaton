@@ -96,6 +96,10 @@ Entendemos que para a criação da segunda fase, uma arquitetura com microsservi
 - Utilizamos o scale pré definido nos horarios de pico, para atender a necessidade dos usuários
 ![cron](https://github.com/Diegobbrito/hackaton/blob/main/docs/cronjobs.jpg)
 
+#### Desenho MVP - 2
+
+  ![mvp-2](https://github.com/Diegobbrito/hackaton/blob/main/docs/MVP-2.jpg)
+
 ## Autores
 
 - [Diego B Brito](https://github.com/Diegobbrito)
