@@ -95,7 +95,7 @@ Entendemos que para a criação da segunda fase, uma arquitetura com microsservi
 - Ideal avaliar por meio de Stress Test a quantidade minima necessária nos horários de pico e pós
 - Utilizamos o scale pré definido nos horarios de pico, para atender a necessidade dos usuários
 ![cron](https://github.com/Diegobbrito/hackaton/blob/main/docs/cronjobs.jpg)
-- 
+
 #### Desenho MVP - 1
 
 ![mvp-1](https://github.com/Diegobbrito/hackaton/blob/main/docs/MVP-1.png)
